@@ -1,5 +1,10 @@
 <template>
-  <ProjectForm :title="title" :details="details" submitText="Update Project" @submit-data="updateProject"/>
+  <div v-if="title">
+    <ProjectForm :title="title" :details="details" submitText="Update Project" @submit-data="updateProject"/>
+  </div>
+  <div v-else>
+    Loading Project...
+  </div>
 </template>
 
 <script>
@@ -29,7 +34,7 @@ export default {
       }
     }
 
-    const updateProject = async (title, details) => {
+    const handleSubmit = async (title, details) => {
       try {
         await fetch(uri, {
           method: 'PATCH',
@@ -49,7 +54,7 @@ export default {
     return {
       title,
       details,
-      updateProject
+      updateProject: handleSubmit
     }
   }
 }

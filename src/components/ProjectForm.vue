@@ -10,19 +10,25 @@
 
 <script>
 
+import {ref} from "vue";
+
 export default {
   name: "ProjectForm",
   props: ['title', 'details', 'submitText'],
   setup(props, context) {
+    const title = ref(props.title)
+    const details = ref(props.details)
 
     const handleSubmit = () => {
       context.emit('submit-data',
-          props.title,
-          props.details
+          title.value,
+          details.value
       )
     }
 
     return {
+      title,
+      details,
       handleSubmit
     }
   }
