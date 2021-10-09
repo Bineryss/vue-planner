@@ -3,8 +3,9 @@
     <div class="actions">
       <h3 @click="showDetails = !showDetails">{{ project.title }}</h3>
       <div class="icons">
-        <!--        <ion-icon name="create-outline"></ion-icon>-->
-        <ion-icon name="pencil-outline"></ion-icon>
+        <router-link :to="{name: 'EditProject', params: {id: project.id}}">
+          <ion-icon name="pencil-outline"></ion-icon>
+        </router-link>
         <ion-icon name="trash-outline" @click="deleteProject"></ion-icon>
         <ion-icon name="checkmark-outline" @click="toggleComplete"></ion-icon>
       </div>
@@ -47,7 +48,6 @@ export default {
       }
       context.emit('complete', props.project.id)
     }
-
     return {
       showDetails,
       deleteProject,
