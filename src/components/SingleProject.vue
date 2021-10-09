@@ -1,11 +1,12 @@
 <template>
-  <div class="project">
+  <div class="project" :class="{ complete: project.complete}">
     <div class="actions">
       <h3 @click="showDetails = !showDetails">{{ project.title }}</h3>
       <div class="icons">
-        <ion-icon name="create-outline"></ion-icon>
+        <!--        <ion-icon name="create-outline"></ion-icon>-->
+        <ion-icon name="pencil-outline"></ion-icon>
         <ion-icon name="trash-outline" @click="deleteProject"></ion-icon>
-        <ion-icon name="checkmark-outline"></ion-icon>
+        <ion-icon name="checkmark-outline" @click="toggleComplete"></ion-icon>
       </div>
     </div>
     <div class="details" v-if="showDetails">
@@ -26,7 +27,6 @@ export default {
 
     const deleteProject = async () => {
       try {
-
         await fetch(uri, {
           method: 'DELETE'
         })
@@ -35,9 +35,23 @@ export default {
         console.log(err.message)
       }
     }
+    const toggleComplete = async () => {
+      try {
+        await fetch(uri, {
+          method: 'PATCH',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({complete: !props.project.complete})
+        })
+      } catch (err) {
+        console.log(err.message)
+      }
+      context.emit('complete', props.project.id)
+    }
+
     return {
       showDetails,
-      deleteProject
+      deleteProject,
+      toggleComplete
     }
   }
 }
@@ -51,6 +65,10 @@ export default {
   border-radius: 4px;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.05);
   border-left: 4px solid #e90074;
+}
+
+.project.complete {
+  border-left: 4px solid #00ce89;
 }
 
 h3 {
